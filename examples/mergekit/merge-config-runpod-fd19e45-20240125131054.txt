@@ -1,0 +1,182 @@
+➜  mergekit-config-runpod-fd19e45-20240125131054 cat config.yaml
+slices:
+  - sources:
+      - model: NousResearch/Nous-Hermes-2-Yi-34B
+        layer_range: [0, 60]
+      - model: jondurbin/bagel-dpo-34b-v0.2
+        layer_range: [0, 60]
+merge_method: slerp
+base_model: jondurbin/bagel-dpo-34b-v0.2
+parameters:
+  t:
+    - filter: self_attn
+      value: [0, 0.5, 0.3, 0.7, 1]
+    - filter: mlp
+      value: [1, 0.5, 0.7, 0.3, 0]
+    - value: 0.5
+dtype: bfloat16%
+➜  mergekit-config-runpod-fd19e45-20240125131054 cat run-merge.sh
+apt-get update
+apt-get install tmux
+pip install uggingface_hub
+
+# @title ## Run merge
+# @markdown ### Runtime type
+# @markdown Select your runtime (CPU, High RAM, GPU)
+# runtime = "CPU + High-RAM" # @param ["CPU", "CPU + High-RAM", "GPU"]
+# @markdown ### Mergekit arguments
+# @markdown Use the `main` branch by default, [`mixtral`](https://github.com/cg123/mergekit/blob/mixtral/moe.md) if you want to create a Mixture of Experts.
+#if branch == "main":
+#    !git clone https://github.com/cg123/mergekit.git
+#    !cd mergekit && pip install -qqq -e . --progress-bar off
+#elif branch == "mixtral":
+#    !git clone https://github.com/cg123/mergekit.git
+#    !cd mergekit/
+#    !git switch mixtral
+#    !pip install -e .
+#if branch == "main":
+#    cli = "mergekit-yaml config.yaml merge --copy-tokenizer"
+#elif branch == "mixtral":
+#    #cli = "mergekit-moe config.yaml merge --copy-tokenizer"
+#    cli = "mergekit-yaml config.yaml merge --copy-tokenizer"  #mergekit-yaml config.yaml merge --copy-tokenizer --trust-remote-code --cuda --low-cpu-memory
+#if runtime == "CPU":
+#    cli += " --allow-crimes --out-shard-size 1B --lazy-unpickle"
+#elif runtime == "GPU":
+#    cli += " --cuda --low-cpu-memory"
+#if trust_remote_code:
+#    cli += " --trust-remote-code"
+#print(cli)
+#!{cli}
+
+git clone https://github.com/cg123/mergekit.git
+mv config.yaml mergekit/
+mv run-upload.py mergekit/
+cd mergekit/
+git switch mixtral
+pip install -e .
+mergekit-yaml config.yaml merge --copy-tokenizer --trust-remote-code --allow-crimes --out-shard-size 4B --lazy-unpickle
+python run-upload.py
+sleep infinity%
+➜  mergekit-config-runpod-fd19e45-20240125131054 cat run-upload.py
+MODEL_NAME = 'Yi-2x34B-v2-Merge-Slerp'
+
+#yaml_config = '''
+#slices:
+#  - sources:
+#      - model: NousResearch/Nous-Hermes-2-Yi-34B
+#        layer_range: [0, 60]
+#      - model: jondurbin/bagel-dpo-34b-v0.2
+#        layer_range: [0, 60]
+#merge_method: slerp
+#base_model: jondurbin/bagel-dpo-34b-v0.2
+#parameters:
+#  t:
+#    - filter: self_attn
+#      value: [0, 0.5, 0.3, 0.7, 1]
+#    - filter: mlp
+#      value: [1, 0.5, 0.7, 0.3, 0]
+#    - value: 0.5
+#dtype: bfloat16
+#'''
+
+# @title ## Upload model to Hugging Face { display-mode: "form" }
+# @markdown Enter your HF username and the name of Colab secret that stores your [Hugging Face access token](https://huggingface.co/settings/tokens).
+username = 'chenhugging' # @param {type:"string"}
+token = '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' # @param {type:"string"}
+license = "apache-2.0" # @param ["apache-2.0", "cc-by-nc-4.0", "mit", "openrail"] {allow-input: true}
+
+import yaml
+
+from huggingface_hub import ModelCard, ModelCardData, HfApi
+from jinja2 import Template
+
+branch = "mixtral"
+
+if branch == "mixtral":
+    template_text = """
+---
+license: {{ license }}
+base_model:
+{%- for model in models %}
+  - {{ model }}
+{%- endfor %}
+tags:
+- moe
+- frankenmoe
+- merge
+- mergekit
+- lazymergekit
+{%- for model in models %}
+- {{ model }}
+{%- endfor %}
+---
+
+# {{ model_name }}
+
+{{ model_name }} is a Mixure of Experts (MoE) made with the following models using [LazyMergekit](https://colab.research.google.com/drive/1obulZ1ROXHjYLn6PPZJwRR6GzgQogxxb?usp=sharing):
+
+{%- for model in models %}
+* [{{ model }}](https://huggingface.co/{{ model }})
+{%- endfor %}
+
+## 🧩 Configuration
+
+```yaml
+{{- yaml_config -}}
+```
+
+## 💻 Usage
+
+```python
+!pip install -qU transformers bitsandbytes accelerate
+
+from transformers import AutoTokenizer
+import transformers
+import torch
+
+model = "{{ username }}/{{ model_name }}"
+
+tokenizer = AutoTokenizer.from_pretrained(model)
+pipeline = transformers.pipeline(
+    "text-generation",
+    model=model,
+    model_kwargs={"torch_dtype": torch.float16, "load_in_4bit": True},
+)
+
+messages = [{"role": "user", "content": "Explain what a Mixture of Experts is in less than 100 words."}]
+prompt = pipeline.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+outputs = pipeline(prompt, max_new_tokens=256, do_sample=True, temperature=0.7, top_k=50, top_p=0.95)
+print(outputs[0]["generated_text"])
+```
+"""
+
+    # Create a Jinja template object
+    jinja_template = Template(template_text.strip())
+
+    # Fill the template
+    #data = yaml.safe_load(yaml_config)
+    #models = [model['source_model'] for model in data['experts']]
+
+    content = jinja_template.render(
+        model_name=MODEL_NAME,
+        #models=models,
+        #yaml_config=yaml_config,
+        username=username,
+        license=license
+    )
+
+# Save the model card
+card = ModelCard(content)
+card.save('merge/README.md')
+
+# Defined in the secrets tab in Google Colab
+api = HfApi(token=token)
+
+api.create_repo(
+    repo_id=f"{username}/{MODEL_NAME}",
+    repo_type="model"
+)
+api.upload_folder(
+    repo_id=f"{username}/{MODEL_NAME}",
+    folder_path="merge",
+)
