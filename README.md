@@ -1,22 +1,16 @@
-This repository gathers state-of-art LLM training and testing scripts / repositories.
+This repository compiles cutting-edge training and evaluation tools and resources for Large Language Models (LLMs).
 
-## llm-autoeval
-https://github.com/chenhaodev/llm-autoeval
-It simplifies the process of evaluating LLMs using a convenient interface. Special commit: + create_pods.py, add arg for num_of_gpu. 
+### llm-autoeval
+[llm-autoeval](https://github.com/chenhaodev/llm-autoeval) offers an efficient way to assess LLMs with an easy-to-use interface. Noteworthy update: Integrated `create_pods.py` with an additional argument for specifying the number of GPUs.
 
-## lm-evaluation-harness
-https://github.com/chenhaodev/lm-evaluation-harness
-Unified framework to test generative language models on a large number of different evaluation tasks. Special commit: + medical knowledge db, cancer instruct db
+### lm-evaluation-harness
+[lm-evaluation-harness](https://github.com/chenhaodev/lm-evaluation-harness) provides a comprehensive platform for evaluating generative language models across a wide array of tasks. Important update: Added databases for medical knowledge and cancer instructions.
 
-## openai-evals
-https://github.com/chenhaodev/openai-evals
-Openai official evalation framework and benchmark. Special commit: + medical knowledge db, cancer instruct db. 
+### openai-evals
+[openai-evals](https://github.com/chenhaodev/openai-evals) is the official evaluation framework and benchmark from OpenAI. Significant update: Expanded with medical knowledge and cancer instruction databases.
 
-## llama-factory
-https://github.com/chenhaodev/llm-llama-factory
-One-stop interface that create fine-tune process. My special commit: + medical knowledge db, cancer instruct db for training. 
+### llama-factory
+[llama-factory](https://github.com/chenhaodev/llm-llama-factory) is a unified solution for creating and fine-tuning processes. Key update: Enriched with databases for medical knowledge and cancer instructions for training purposes.
 
-## mergekit 
-https://github.com/chenhaodev/llm-mergekit
-A toolkit for merging pre-trained language models. Merges can be run entirely on CPU or accelerated with as little as 8 GB of VRAM. 
-
+### mergekit
+[mergekit](https://github.com/chenhaodev/llm-mergekit) is a utility for integrating pre-trained language models. It supports merging operations on CPUs or with minimal GPU requirements, needing only 8 GB of VRAM.
