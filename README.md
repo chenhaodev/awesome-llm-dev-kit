@@ -14,3 +14,6 @@ This repository compiles cutting-edge training and evaluation tools and resource
 
 ### mergekit
 [mergekit](https://github.com/chenhaodev/llm-mergekit) is a utility for integrating pre-trained language models. It supports merging operations on CPUs or with minimal GPU requirements, needing only 8 GB of VRAM.
+
+### alpaca-cot-dataset
+[dataset-cot](https://github.com/PhoebusSi/Alpaca-CoT) a repo continually broadening data collection for instruction tuning and incorporating additional large language models along with more efficient parameter techniques.
