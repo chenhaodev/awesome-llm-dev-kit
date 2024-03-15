@@ -60,7 +60,7 @@ class ChatPDF:
         self.chain = None
 
 def main():
-    parser = argparse.ArgumentParser(description="CLI for querying scientific papers with ChatPDF. Supports single questions or interactive chat mode.")
+    parser = argparse.ArgumentParser(description="CLI for querying scientific papers with ChatPDF. Supports single questions or interactive chat mode. Remember to run ollama in the backend before using this CLI")
     parser.add_argument('-f', '--file', help="Path to the PDF file", required=True)
     parser.add_argument('-q', '--question', help="Question to ask about the PDF document", required=False)
 

@@ -2,7 +2,7 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.chat_models import ChatOllama
 from langchain_community.embeddings import FastEmbedEmbeddings
 from langchain.schema.output_parser import StrOutputParser
-from langchain_community.document_loaders import PyPDFLoader, HTMLLoader, TXTLoader  # Assume HTMLLoader and TXTLoader exist
+from langchain_community.document_loaders import PyPDFLoader, UnstructuredHTMLLoader, TextLoader # Assume UnstructuredHTMLLoader and TextLoader exist
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.prompts import PromptTemplate
@@ -17,7 +17,7 @@ class ChatDocument:
         self.model = ChatOllama(model="mistral")
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=100)
         self.prompt = PromptTemplate.from_template("""
-            <s> [Instruction] You are a scientific assistant tasked with answering questions based on the provided document. Utilize the context from the document to formulate your response. If the answer is not available within the document, indicate that the information is not available. Aim for responses that are direct, informative, and no longer than three sentences. [/Instruction] </s>
+            <s> [Instruction] You are an assistant tasked with answering questions based on the provided document. Utilize the context from the document to formulate your response. If the answer is not available within the document, indicate that the information is not available. Aim for responses that are direct, informative, and no longer than three sentences. [/Instruction] </s>
             [Instruction] Question: {question}
             Context: {context}
             Answer: [/Instruction]
@@ -29,9 +29,9 @@ class ChatDocument:
             if file_type == 'pdf':
                 docs = PyPDFLoader(file_path=file_path).load()
             elif file_type == 'html':
-                docs = HTMLLoader(file_path=file_path).load()  # Assume HTMLLoader exists
+                docs = UnstructuredHTMLLoader(file_path=file_path).load()  # Assume UnstructuredHTMLLoader exists
             elif file_type == 'txt':
-                docs = TXTLoader(file_path=file_path).load()  # Assume TXTLoader exists
+                docs = TextLoader(file_path=file_path).load()  # Assume TextLoader exists
             else:
                 return "Unsupported file type"
         except Exception as e:
@@ -69,7 +69,7 @@ class ChatDocument:
         self.chain = None
 
 def main():
-    parser = argparse.ArgumentParser(description="CLI for querying documents with ChatDocument. Supports single questions or interactive chat mode.")
+    parser = argparse.ArgumentParser(description="CLI for querying documents with ChatDocument. Supports single questions or interactive chat mode. Remember to run ollama in the backend before using this CLI")
     parser.add_argument('-f', '--file', help="Path to the document file (e.g. pdf, html, txt)", required=True)
     parser.add_argument('-q', '--question', help="Question to ask about the document", required=False)
 
