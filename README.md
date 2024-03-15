@@ -17,3 +17,9 @@ This repository compiles cutting-edge training and evaluation tools and resource
 
 ### alpaca-cot-dataset
 [dataset-cot](https://github.com/PhoebusSi/Alpaca-CoT) a repo continually broadening data collection for instruction tuning and incorporating additional large language models along with more efficient parameter techniques.
+
+### whisper.cpp 
+[whisper.cpp](https://github.com/chenhaodev/awesome-llm-dev-kit/tree/main/examples/whisper.cpp) a Python CLI/application that utilizes whisper.cpp for converting speech to text.
+
+### rag-langchain
+[rag-langchain](https://github.com/chenhaodev/awesome-llm-dev-kit/tree/main/examples/rag-langchain) is a Python CLI/application designed to employ ollama/offline-LLM and retrieve documents in paper/pdf, html, txt formats for enhanced human interaction. 
