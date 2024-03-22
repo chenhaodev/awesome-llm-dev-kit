@@ -23,3 +23,6 @@ This repository compiles cutting-edge training and evaluation tools and resource
 
 ### rag-langchain
 [rag-langchain](https://github.com/chenhaodev/awesome-llm-dev-kit/tree/main/examples/rag-langchain) is a Python CLI/application designed to employ ollama/offline-LLM and retrieve documents in paper/pdf, html, txt formats for enhanced human interaction. 
+
+### awesome-llm-sum
+[awesome-llm](https://github.com/Hannibal046/Awesome-LLM) a curated list of awesome llm agents. open source, application, platform, or resources. 
