@@ -1,9 +1,7 @@
 This repository compiles cutting-edge training and evaluation tools and resources for Large Language Models (LLMs).
 
 ### llm-course
-[llm-course](https://github.com/mlabonne/llm-course) The LLM course is divided into three parts: LLM Fundamentals covers essential knowledge about mathematics, Python, and neural networks; The LLM Scientist focuses on building the best possible LLMs using the latest techniques; The LLM Engineer focuses on creating LLM-based applications and deploying them.
-
-For an interactive version of this course, I created two **LLM assistants** that will answer questions and test your knowledge in a personalized way:
+[llm-course](https://github.com/mlabonne/llm-course) The course is divided into three parts: fundamentals covers essential knowledge about mathematics, python, and neural networks; Thescientist focuses on building the best possible LLMs using the latest techniques; The engineer focuses on creating llm-based applications and deploying them.
 
 ### llm-autoeval
 [llm-autoeval](https://github.com/chenhaodev/llm-autoeval) offers an efficient way to assess LLMs with an easy-to-use interface. Noteworthy update: Integrated `create_pods.py` with an additional argument for specifying the number of GPUs.
