@@ -34,4 +34,4 @@ This repository compiles cutting-edge training and evaluation tools and resource
 [awesome-llm](https://github.com/Hannibal046/Awesome-LLM) a curated list of awesome llm agents. open source, application, platform, or resources. 
 
 ### pubmed-db-cli
-[pubmed-db-cli](https://github.com/chenhaodev/awesome-llm-dev-kit/tree/main/examples/pubmed-db-cli) is a Python CLI/application similar to https://huggingface.co/spaces/Gaborandi/PubMed_Downloader
+[pubmed-db-cli](https://github.com/chenhaodev/awesome-llm-dev-kit/tree/main/examples/pubmed-db-cli) is a python CLI/application similar to [pubmed_downloader](https://huggingface.co/spaces/Gaborandi/PubMed_Downloader) which searches pattern and capture evidence from pubmed
